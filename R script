@@ -78,10 +78,16 @@ p <- evannoMethodStructure(
 )
 grid.arrange(p)  # Arrange and display the plot
 
-# Save the Evanno method plot to a file
+clusters <- evannoMethodStructure(data = sr1, exportplot = F, returnplot = T, returndata = T)
+str(clusters)
+
+# Extract the gtable and convert it to a grob to save the plot 
+plot_grob <- grid::grobTree(clusters$plot)
+
+# Save the grob as an image
 ggsave(
-  filename = "Cluster_K.png",
-  plot = p$plot[[1]],
+  filename = "Cluster_K_fixed.png",
+  plot = plot_grob,
   width = 10,
   height = 6,
   dpi = 300
