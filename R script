@@ -93,31 +93,45 @@ ggsave(
   dpi = 300
 )
 
-# Generate and display a STRUCTURE plot for a specific K value (e.g., third element in slist)
+#  Check the number of clusters (columns) in each entry of 'slist'
+# 'slist' stores the STRUCTURE outputs, and each entry corresponds to a different K.
+sapply(slist, ncol)  
+
+# Select the entry where K = 2 based on Evanno method results
+# According to the Evanno method, the highest ΔK value indicates the best K.
+# Here, K = 2 was identified as the optimal number of clusters.
+k2_entry <- "RUN3_run_102_f"  # Adjust this if another run better represents K = 2
+
+# Generate STRUCTURE plot for K = 2
 p1 <- plotQ(
-  slist[c(3)],  # Select the third STRUCTURE result
-  returnplot = TRUE,
-  exportplot = FALSE,
-  basesize = 11,
-  clustercol = clist$shiny,  # Use the "shiny" color palette
-  showlegend = TRUE,
-  indlabsize = 14,
-  legendkeysize = 20,
-  legendtextsize = 20,
-  showindlab = TRUE,
-  splabsize = 19,
-  splab = paste0("K=", sapply(slist[c(3)], ncol))  # Label based on the number of clusters
+  slist[k2_entry],  
+  returnplot = TRUE,   # Return the plot as an object for further modifications
+  exportplot = FALSE,  # Do not export automatically
+  basesize = 11,       # Adjust base font size for clarity
+  
+  # Define cluster colors 
+  clustercol = c("red", "blue"),  
+
+  # Formatting options for visualization
+  showlegend = TRUE,   # Display a legend to distinguish clusters
+  indlabsize = 10,     # Individual label size (for genotype/sample names)
+  legendkeysize = 10,  # Size of the legend keys
+  legendtextsize = 10, # Size of the legend text
+  showindlab = TRUE,   # Show individual sample labels
+  splabsize = 10,      # Size of the label for K
+  splab = "K=2"        # Explicitly label the plot with K=2
 )
 
-# Display the first plot in the generated STRUCTURE plot
-p1$plot[[1]]
+# Display the STRUCTURE plot for K = 2
+p1$plot[[1]]  
 
-# Save the STRUCTURE plot for K = 3 to a file
+# Save the STRUCTURE plot as an image file for documentation and publication
 ggsave(
-  filename = "STRUCTURE_Plot_K3.png",
-  plot = p1$plot[[1]],
-  width = 10,
-  height = 6,
-  dpi = 300
+  filename = "STRUCTURE_Plot_K2.png",  # Save the file with a meaningful name
+  plot = p1$plot[[1]],  # Use the generated STRUCTURE plot object
+  width = 13,           # Set width to ensure readability
+  height = 6,           # Set height for proper aspect ratio
+  dpi = 300             # High resolution for publication-quality images
 )
+
 
